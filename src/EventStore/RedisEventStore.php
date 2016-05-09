@@ -5,6 +5,7 @@ namespace CQRS\EventStore;
 use CQRS\Domain\Message\EventMessageInterface;
 use CQRS\Exception;
 use CQRS\Serializer\SerializerInterface;
+use Generator;
 use Ramsey\Uuid\UuidInterface;
 use Redis;
 use Traversable;
@@ -31,13 +32,7 @@ class RedisEventStore implements EventStoreInterface
      */
     private $size;
 
-    /**
-     * @param SerializerInterface $serializer
-     * @param Redis $redis
-     * @param string|null $key
-     * @param int|null $size
-     */
-    public function __construct(SerializerInterface $serializer, Redis $redis, $key = null, $size = null)
+    public function __construct(SerializerInterface $serializer, Redis $redis, string $key = null, int $size = null)
     {
         $this->serializer = $serializer;
         $this->redis = $redis;
@@ -51,9 +46,6 @@ class RedisEventStore implements EventStoreInterface
         }
     }
 
-    /**
-     * @param EventMessageInterface $event
-     */
     public function store(EventMessageInterface $event)
     {
         $record = RedisEventRecord::fromMessage($event, $this->serializer);
@@ -69,9 +61,9 @@ class RedisEventStore implements EventStoreInterface
      * @param int $limit
      * @return EventMessageInterface[]
      */
-    public function read($offset = null, $limit = 10)
+    public function read(int $offset = null, int $limit = 10): array
     {
-        if (null == $offset) {
+        if (null === $offset) {
             $offset = -10;
         }
 
@@ -87,9 +79,9 @@ class RedisEventStore implements EventStoreInterface
      * @param int $timeout
      * @return RedisEventRecord|null
      */
-    public function pop($timeout = 0)
+    public function pop(int $timeout = 0)
     {
-        $data = $this->redis->brPop($this->key, (int) $timeout);
+        $data = $this->redis->brPop($this->key, $timeout);
 
         if (!array_key_exists(1, $data)) {
             return null;
@@ -98,11 +90,7 @@ class RedisEventStore implements EventStoreInterface
         return new RedisEventRecord($data[1]);
     }
 
-    /**
-     * @param null|UuidInterface $previousEventId
-     * @return Traversable
-     */
-    public function iterate(UuidInterface $previousEventId = null)
+    public function iterate(UuidInterface $previousEventId = null): Generator
     {
         throw new Exception\BadMethodCallException('Method is not implemented');
     }

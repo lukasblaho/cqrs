@@ -20,12 +20,7 @@ class RedisEventRecord
      */
     private $data;
 
-    /**
-     * @param EventMessageInterface $event
-     * @param SerializerInterface $serializer
-     * @return RedisEventRecord
-     */
-    public static function fromMessage(EventMessageInterface $event, SerializerInterface $serializer)
+    public static function fromMessage(EventMessageInterface $event, SerializerInterface $serializer): self
     {
         $data = [
             'id' => (string) $event->getId(),
@@ -39,34 +34,25 @@ class RedisEventRecord
         if ($event instanceof DomainEventMessageInterface) {
             $data['aggregate'] = [
                 'type' => $event->getAggregateType(),
-                'id'   => $event->getAggregateId(),
-                'seq'  => $event->getSequenceNumber(),
+                'id' => $event->getAggregateId(),
+                'seq' => $event->getSequenceNumber(),
             ];
         }
 
         return new self(json_encode($data));
     }
 
-    /**
-     * @param string $data
-     */
-    public function __construct($data)
+    public function __construct(string $data)
     {
         $this->data = $data;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->data;
     }
 
-    /**
-     * @return array
-     */
-    public function toArray()
+    public function toArray(): array
     {
         return json_decode($this->data, true);
     }
@@ -75,7 +61,7 @@ class RedisEventRecord
      * @param SerializerInterface $serializer
      * @return GenericDomainEventMessage|GenericEventMessage
      */
-    public function toMessage(SerializerInterface $serializer)
+    public function toMessage(SerializerInterface $serializer): GenericEventMessage
     {
         $data = $this->toArray();
 

@@ -9,10 +9,7 @@ use Doctrine\ORM\Events;
 
 class AggregateRootMetadataListener implements EventSubscriber
 {
-    /**
-     * @return array
-     */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [Events::loadClassMetadata];
     }
@@ -29,8 +26,8 @@ class AggregateRootMetadataListener implements EventSubscriber
         $idEntityName = $classMetadata->name . 'Id';
 
         $classMetadata->mapOneToOne([
-            'fieldName'    => 'id',
-            'targetEntity' => $idEntityName
+            'fieldName' => 'id',
+            'targetEntity' => $idEntityName,
         ]);
     }
 }

@@ -35,12 +35,7 @@ class TableEventStore implements EventStoreInterface
      */
     private $table = 'cqrs_event';
 
-    /**
-     * @param SerializerInterface $serializer
-     * @param Connection $connection
-     * @param string $table
-     */
-    public function __construct(SerializerInterface $serializer, Connection $connection, $table = null)
+    public function __construct(SerializerInterface $serializer, Connection $connection, string $table = null)
     {
         $this->serializer = $serializer;
         $this->connection = $connection;
@@ -50,21 +45,13 @@ class TableEventStore implements EventStoreInterface
         }
     }
 
-    /**
-     * @param EventMessageInterface $event
-     */
     public function store(EventMessageInterface $event)
     {
         $data = $this->toArray($event);
         $this->connection->insert($this->table, $data);
     }
 
-    /**.
-     * @param int|null $offset
-     * @param int $limit
-     * @return EventMessageInterface[]
-     */
-    public function read($offset = null, $limit = 10)
+    public function read(int $offset = null, int $limit = 10): array
     {
         if ($offset === null) {
             $offset = (((int) (($this->getLastRowId() - 1) / $limit)) * $limit) + 1;
@@ -89,11 +76,7 @@ class TableEventStore implements EventStoreInterface
         return $events;
     }
 
-    /**
-     * @param UuidInterface|null $previousEventId
-     * @return Generator
-     */
-    public function iterate(UuidInterface $previousEventId = null)
+    public function iterate(UuidInterface $previousEventId = null): Generator
     {
         $id = $previousEventId ? $this->getRowIdByEventId($previousEventId) : 0;
 
@@ -112,19 +95,17 @@ class TableEventStore implements EventStoreInterface
         }
     }
 
-    /**
-     * @param EventMessageInterface $event
-     * @return array
-     */
-    private function toArray(EventMessageInterface $event)
+    private function toArray(EventMessageInterface $event): array
     {
         $data = [
-            'event_id'     => (string) $event->getId(),
-            'event_date'   => $event->getTimestamp()->format('Y-m-d H:i:s'),
-            'event_date_u' => $event->getTimestamp()->format('u'),
+            'event_id' => (string)$event->getId(),
+            'event_date' => $event->getTimestamp()
+                ->format('Y-m-d H:i:s'),
+            'event_date_u' => $event->getTimestamp()
+                ->format('u'),
             'payload_type' => $event->getPayloadType(),
-            'payload'      => $this->serializer->serialize($event->getPayload()),
-            'metadata'     => $this->serializer->serialize($event->getMetadata()),
+            'payload' => $this->serializer->serialize($event->getPayload()),
+            'metadata' => $this->serializer->serialize($event->getMetadata()),
         ];
 
         if ($event instanceof DomainEventMessageInterface) {
@@ -134,8 +115,8 @@ class TableEventStore implements EventStoreInterface
             }
 
             $data = array_merge($data, [
-                'aggregate_type'  => $event->getAggregateType(),
-                'aggregate_id'    => $aggregateId,
+                'aggregate_type' => $event->getAggregateType(),
+                'aggregate_id' => $aggregateId,
                 'sequence_number' => $event->getSequenceNumber(),
             ]);
         }
@@ -147,12 +128,12 @@ class TableEventStore implements EventStoreInterface
      * @param array $data
      * @return GenericDomainEventMessage|GenericEventMessage
      */
-    public function fromArray(array $data)
+    public function fromArray(array $data): GenericEventMessage
     {
-        $payload   = $this->serializer->deserialize($data['payload'], $data['payload_type']);
+        $payload = $this->serializer->deserialize($data['payload'], $data['payload_type']);
         /** @var Metadata $metadata */
-        $metadata  = $this->serializer->deserialize($data['metadata'], Metadata::class);
-        $id        = Uuid::fromString($data['event_id']);
+        $metadata = $this->serializer->deserialize($data['metadata'], Metadata::class);
+        $id = Uuid::fromString($data['event_id']);
         $timestamp = new Timestamp("{$data['event_date']}.{$data['event_date_u']}");
 
         if (array_key_exists('aggregate_type', $data)) {
@@ -170,10 +151,7 @@ class TableEventStore implements EventStoreInterface
         return new GenericEventMessage($payload, $metadata, $id, $timestamp);
     }
 
-    /**
-     * @return int
-     */
-    private function getLastRowId()
+    private function getLastRowId(): int
     {
         $sql = 'SELECT MAX(id) FROM ' . $this->table;
 
@@ -183,11 +161,7 @@ class TableEventStore implements EventStoreInterface
         return (int) $stmt->fetchColumn();
     }
 
-    /**
-     * @param UuidInterface $eventId
-     * @return int
-     */
-    private function getRowIdByEventId(UuidInterface $eventId)
+    private function getRowIdByEventId(UuidInterface $eventId): int
     {
         static $lastEventId, $lastRowId;
 

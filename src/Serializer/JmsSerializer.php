@@ -16,11 +16,7 @@ class JmsSerializer implements SerializerInterface
      */
     private $format = 'json';
 
-    /**
-     * @param Serializer $serializer
-     * @param string $format
-     */
-    public function __construct(Serializer $serializer, $format = null)
+    public function __construct(Serializer $serializer, string $format = null)
     {
         $this->serializer = $serializer;
 
@@ -30,10 +26,10 @@ class JmsSerializer implements SerializerInterface
     }
 
     /**
-     * @param object|array $data
+     * @param mixed $data
      * @return string
      */
-    public function serialize($data)
+    public function serialize($data): string
     {
         return $this->serializer->serialize($data, $this->format);
     }
@@ -41,9 +37,9 @@ class JmsSerializer implements SerializerInterface
     /**
      * @param string $data
      * @param string $type
-     * @return object|array
+     * @return mixed
      */
-    public function deserialize($data, $type)
+    public function deserialize(string $data, string $type)
     {
         return $this->serializer->deserialize($data, $type, $this->format);
     }

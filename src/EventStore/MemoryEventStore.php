@@ -13,29 +13,17 @@ class MemoryEventStore implements EventStoreInterface
      */
     private $events;
 
-    /**
-     * @param EventMessageInterface $event
-     */
     public function store(EventMessageInterface $event)
     {
         $this->events[] = $event;
     }
 
-    /**
-     * @param int|null $offset
-     * @param int $limit
-     * @return array
-     */
-    public function read($offset = null, $limit = 10)
+    public function read(int $offset = null, int $limit = 10): array
     {
-        return array_slice($this->events, (int) $offset, $limit);
+        return array_slice($this->events, $offset, $limit);
     }
 
-    /**
-     * @param UuidInterface|null $previousEventId
-     * @return Generator
-     */
-    public function iterate(UuidInterface $previousEventId = null)
+    public function iterate(UuidInterface $previousEventId = null): Generator
     {
         $yield = !$previousEventId;
         foreach ($this->events as $event) {

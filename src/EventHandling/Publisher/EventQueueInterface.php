@@ -9,5 +9,5 @@ interface EventQueueInterface
     /**
      * @return EventMessageInterface[]
      */
-    public function dequeueAllEvents();
+    public function dequeueAllEvents(): array;
 }

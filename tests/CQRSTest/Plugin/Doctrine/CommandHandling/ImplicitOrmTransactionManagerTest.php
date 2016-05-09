@@ -11,7 +11,7 @@ class ImplicitOrmTransactionManagerTest extends PHPUnit_Framework_TestCase
     {
         $entityManager = $this->getMock('Doctrine\ORM\EntityManagerInterface');
         $entityManager->expects($this->never())
-            ->method('begin');
+            ->method('beginTransaction');
 
         /** @var \Doctrine\ORM\EntityManagerInterface $entityManager */
         $transactionManager = new ImplicitOrmTransactionManager($entityManager);

@@ -7,21 +7,17 @@ use Doctrine\DBAL\Schema\Table;
 
 class TableEventStoreSchema
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     private $table;
 
-    /**
-     * @param string $table
-     */
-    public function __construct($table = 'cqrs_event')
+    public function __construct(string $table = 'cqrs_event')
     {
         $this->table = $table;
     }
 
-    /**
-     * @return Table
-     */
-    public function getTableSchema()
+    public function getTableSchema(): Table
     {
         $schema = new Schema();
         $table = $schema->createTable($this->table);

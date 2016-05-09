@@ -4,8 +4,5 @@ namespace CQRS\Domain\Message;
 
 interface EventMessageInterface extends MessageInterface
 {
-    /**
-     * @return Timestamp
-     */
-    public function getTimestamp();
+    public function getTimestamp(): Timestamp;
 }

@@ -19,16 +19,6 @@ class CommandHandlerLocatorTest extends PHPUnit_Framework_TestCase
         $this->assertSame($handler, $locator->get('Command'));
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Command type must be a string; got integer
-     */
-    public function testItThrowsExceptionIfEventTypeIsNotString()
-    {
-        $locator = new CommandHandlerLocator();
-        $locator->set(123, 'handler');
-    }
-
     public function testItThrowsExceptionWhenNoHandlerIsRegisteredForCommand()
     {
         $this->setExpectedException(

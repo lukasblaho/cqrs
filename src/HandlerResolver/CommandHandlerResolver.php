@@ -7,9 +7,9 @@ class CommandHandlerResolver
     /**
      * @param mixed $handler
      * @param string $commandType
-     * @return callable
+     * @return callable|mixed
      */
-    public function __invoke($handler, $commandType)
+    public function __invoke($handler, string $commandType)
     {
         if (is_object($handler) && !is_callable($handler)) {
             $method = $this->resolveHandlingMethod($commandType);
@@ -27,7 +27,7 @@ class CommandHandlerResolver
      * @param string $commandType
      * @return string
      */
-    protected function resolveHandlingMethod($commandType)
+    protected function resolveHandlingMethod(string $commandType): string
     {
         // Remove namespace
         $pos = strrpos($commandType, '\\');

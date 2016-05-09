@@ -7,29 +7,16 @@ use Ramsey\Uuid\UuidInterface;
 
 interface MessageInterface extends JsonSerializable
 {
-    /**
-     * @return UuidInterface
-     */
-    public function getId();
+    public function getId(): UuidInterface;
 
-    /**
-     * @return string
-     */
-    public function getPayloadType();
+    public function getPayloadType(): string;
 
     /**
      * @return mixed
      */
     public function getPayload();
 
-    /**
-     * @return Metadata
-     */
-    public function getMetadata();
+    public function getMetadata(): Metadata;
 
-    /**
-     * @param Metadata $metadata
-     * @return static
-     */
     public function addMetadata(Metadata $metadata);
 }

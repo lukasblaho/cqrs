@@ -11,12 +11,11 @@ use Doctrine\ORM\Events;
 
 class RemoveDeletedAggregatesListener implements EventSubscriber
 {
-    /** @var EntityManagerInterface */
+    /**
+     * @var EntityManagerInterface
+     */
     private $entityManager;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -27,14 +26,9 @@ class RemoveDeletedAggregatesListener implements EventSubscriber
         $eventManager->addEventSubscriber($this);
     }
 
-    /**
-     * @return array
-     */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
-        return [
-            Events::preFlush,
-        ];
+        return [Events::preFlush];
     }
 
     /**

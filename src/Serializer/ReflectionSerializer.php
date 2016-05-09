@@ -24,10 +24,10 @@ class ReflectionSerializer implements SerializerInterface
     private $reflectionProperties = [];
 
     /**
-     * @param object $data
+     * @param mixed $data
      * @return string
      */
-    public function serialize($data)
+    public function serialize($data): string
     {
         return json_encode($this->toPhpClassArray($data));
     }
@@ -35,19 +35,19 @@ class ReflectionSerializer implements SerializerInterface
     /**
      * @param string $data
      * @param string $type
-     * @return object
+     * @return mixed
      */
-    public function deserialize($data, $type)
+    public function deserialize(string $data, string $type)
     {
         return $this->fromArray(json_decode($data, true));
     }
 
 
     /**
-     * @param object $object
+     * @param mixed $object
      * @return array
      */
-    private function toPhpClassArray($object)
+    private function toPhpClassArray($object): array
     {
         $data = $this->toArray($object);
 
@@ -58,15 +58,15 @@ class ReflectionSerializer implements SerializerInterface
         }
 
         return array_merge([
-            'php_class' => get_class($object)
+            'php_class' => get_class($object),
         ], $data);
     }
 
     /**
-     * @param object $object
+     * @param mixed $object
      * @return array
      */
-    private function toArray($object)
+    private function toArray($object): array
     {
         if ($object instanceof DateTimeInterface) {
             return ['time' => $object->format('Y-m-d\TH:i:s.uO')];
@@ -80,10 +80,10 @@ class ReflectionSerializer implements SerializerInterface
     }
 
     /**
-     * @param object $object
+     * @param mixed $object
      * @return array
      */
-    private function extractValuesFromObject($object)
+    private function extractValuesFromObject($object): array
     {
         $data = [];
         foreach ($this->getReflectionProperties(get_class($object)) as $property) {
@@ -94,7 +94,7 @@ class ReflectionSerializer implements SerializerInterface
 
     /**
      * @param array $data
-     * @return array|object
+     * @return mixed
      */
     private function fromArray(array $data)
     {
@@ -104,7 +104,7 @@ class ReflectionSerializer implements SerializerInterface
             }
         }
 
-        if (isset($data['php_class'])) {
+        if (array_key_exists('php_class', $data)) {
             return $this->toObject($data['php_class'], $data);
         }
 
@@ -114,9 +114,9 @@ class ReflectionSerializer implements SerializerInterface
     /**
      * @param string $className
      * @param array $data
-     * @return object
+     * @return mixed
      */
-    private function toObject($className, array $data)
+    private function toObject(string $className, array $data)
     {
         switch ($className) {
             case DateTime::class:
@@ -136,11 +136,11 @@ class ReflectionSerializer implements SerializerInterface
     }
 
     /**
-     * @param object $object
+     * @param mixed $object
      * @param array $data
      * @param string $className
      */
-    private function hydrateObjectFromValues($object, array $data, $className)
+    private function hydrateObjectFromValues($object, array $data, string $className)
     {
         foreach ($this->getReflectionProperties($className) as $property) {
             $name = $property->getName();
@@ -153,13 +153,9 @@ class ReflectionSerializer implements SerializerInterface
         }
     }
 
-    /**
-     * @param string $className
-     * @return ReflectionClass
-     */
-    private function getReflectionClass($className)
+    private function getReflectionClass(string $className): ReflectionClass
     {
-        if (!isset($this->classes[$className])) {
+        if (!array_key_exists($className, $this->classes)) {
             $this->classes[$className] = new ReflectionClass($className);
         }
 
@@ -170,9 +166,9 @@ class ReflectionSerializer implements SerializerInterface
      * @param string $className
      * @return ReflectionProperty[]
      */
-    private function getReflectionProperties($className)
+    private function getReflectionProperties(string $className): array
     {
-        if (!isset($this->reflectionProperties[$className])) {
+        if (!array_key_exists($className, $this->reflectionProperties)) {
             $reflectionClass = $this->getReflectionClass($className);
             $this->reflectionProperties[$className] = $reflectionClass->getProperties();
             foreach ($this->reflectionProperties[$className] as $reflectionProperty) {

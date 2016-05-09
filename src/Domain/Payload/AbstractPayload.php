@@ -29,7 +29,7 @@ abstract class AbstractPayload
      * @param string $name
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         $this->assertPropertyExists($name);
         return $this->$name;
@@ -39,7 +39,7 @@ abstract class AbstractPayload
      * @param string $name
      * @throws RuntimeException
      */
-    protected function throwPropertyIsNotValidException($name)
+    protected function throwPropertyIsNotValidException(string $name)
     {
         throw new RuntimeException(sprintf(
             'Property "%s" is not a valid property on "%s"',
@@ -52,7 +52,7 @@ abstract class AbstractPayload
      * @param string $name
      * @throws RuntimeException
      */
-    private function assertPropertyExists($name)
+    private function assertPropertyExists(string $name)
     {
         $vars = get_object_vars($this);
 

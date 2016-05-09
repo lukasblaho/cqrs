@@ -20,10 +20,6 @@ class EventStoreEventStream implements IteratorAggregate, EventStreamInterface
      */
     private $lastEventId;
 
-    /**
-     * @param EventStoreInterface $eventStore
-     * @param UuidInterface|null $previousEventId
-     */
     public function __construct(EventStoreInterface $eventStore, UuidInterface $previousEventId = null)
     {
         $this->eventStore = $eventStore;
@@ -38,10 +34,7 @@ class EventStoreEventStream implements IteratorAggregate, EventStreamInterface
         return $this->lastEventId;
     }
 
-    /**
-     * @return Generator
-     */
-    public function getIterator()
+    public function getIterator(): Generator
     {
         $eventIterator = $this->eventStore->iterate($this->lastEventId);
 

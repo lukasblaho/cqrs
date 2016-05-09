@@ -16,14 +16,12 @@ class DoctrineEventPublisher extends SimpleEventPublisher implements EventSubscr
 
     /**
      * Returns an array of events this subscriber wants to listen to.
-     *
-     * @return array
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::preFlush,
-            Events::postFlush
+            Events::postFlush,
         ];
     }
 
@@ -40,7 +38,7 @@ class DoctrineEventPublisher extends SimpleEventPublisher implements EventSubscr
 
     public function postFlush()
     {
-        if (empty($this->events)) {
+        if (count($this->events) === 0) {
             return;
         }
 

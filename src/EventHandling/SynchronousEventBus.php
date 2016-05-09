@@ -22,20 +22,13 @@ class SynchronousEventBus extends AbstractEventBus
      */
     private $logger;
 
-    /**
-     * @param ContainerInterface $locator
-     * @param LoggerInterface|null $logger
-     */
     public function __construct(ContainerInterface $locator, LoggerInterface $logger = null)
     {
         $this->locator = $locator;
         $this->logger = $logger ?: new NullLogger();
     }
 
-    /**
-     * @return ContainerInterface
-     */
-    public function getLocator()
+    public function getLocator(): ContainerInterface
     {
         return $this->locator;
     }
@@ -50,11 +43,12 @@ class SynchronousEventBus extends AbstractEventBus
             'Publishing Event %s',
             $event->getPayloadType()
         ), [
-            'event_id'           => $event->getId(),
+            'event_id' => $event->getId(),
             'event_payload_type' => $event->getPayloadType(),
-            'event_payload'      => (array) $event->getPayload(),
-            'event_metadata'     => $event->getMetadata()->toArray(),
-            'event_timestamp'    => $event->getTimestamp()
+            'event_payload' => (array)$event->getPayload(),
+            'event_metadata' => $event->getMetadata()
+                ->toArray(),
+            'event_timestamp' => $event->getTimestamp(),
         ]);
 
         $eventType = $event->getPayloadType();
@@ -134,11 +128,7 @@ class SynchronousEventBus extends AbstractEventBus
         }
     }
 
-    /**
-     * @param callable $handler
-     * @return string
-     */
-    private function getHandlerName(callable $handler)
+    private function getHandlerName(callable $handler): string
     {
         if (is_object($handler)) {
             return get_class($handler);

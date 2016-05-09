@@ -40,10 +40,7 @@ class GenericMessage implements MessageInterface
         $this->metadata = Metadata::from($metadata);
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,
@@ -53,18 +50,12 @@ class GenericMessage implements MessageInterface
         ];
     }
 
-    /**
-     * @return UuidInterface
-     */
-    public function getId()
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getPayloadType()
+    public function getPayloadType(): string
     {
         return $this->payloadType;
     }
@@ -77,19 +68,12 @@ class GenericMessage implements MessageInterface
         return $this->payload;
     }
 
-    /**
-     * @return Metadata
-     */
-    public function getMetadata()
+    public function getMetadata(): Metadata
     {
         return $this->metadata;
     }
 
-    /**
-     * @param Metadata $metadata
-     * @return static
-     */
-    public function addMetadata(Metadata $metadata)
+    public function addMetadata(Metadata $metadata): self
     {
         $metadata = $this->metadata->mergedWith($metadata);
 

@@ -12,19 +12,13 @@ use Doctrine\ORM\Events;
 
 class DoctrineIdentityMap extends SimpleIdentityMap implements EventSubscriber
 {
-    /**
-     * @param EntityManager $entityManager
-     */
     public function __construct(EntityManager $entityManager)
     {
         $entityManager->getEventManager()
             ->addEventSubscriber($this);
     }
 
-    /**
-     * @return array
-     */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::postLoad,
@@ -34,9 +28,6 @@ class DoctrineIdentityMap extends SimpleIdentityMap implements EventSubscriber
         ];
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     */
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -46,9 +37,6 @@ class DoctrineIdentityMap extends SimpleIdentityMap implements EventSubscriber
         }
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -58,9 +46,6 @@ class DoctrineIdentityMap extends SimpleIdentityMap implements EventSubscriber
         }
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     */
     public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -70,9 +55,6 @@ class DoctrineIdentityMap extends SimpleIdentityMap implements EventSubscriber
         }
     }
 
-    /**
-     * @param OnClearEventArgs $args
-     */
     public function onClear(OnClearEventArgs $args)
     {
         if ($args->clearsAllEntities()) {

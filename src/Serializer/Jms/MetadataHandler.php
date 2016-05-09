@@ -10,24 +10,24 @@ use JMS\Serializer\VisitorInterface;
 
 class MetadataHandler implements SubscribingHandlerInterface
 {
-    public static function getSubscribingMethods()
+    public static function getSubscribingMethods(): array
     {
         $methods = [];
         $formats = ['json', 'xml', 'yml'];
 
         foreach ($formats as $format) {
             $methods[] = [
-                'type'      => Metadata::class,
+                'type' => Metadata::class,
                 'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
-                'format'    => $format,
-                'method'    => 'serializeMetadata'
+                'format' => $format,
+                'method' => 'serializeMetadata',
             ];
 
             $methods[] = [
-                'type'      => Metadata::class,
+                'type' => Metadata::class,
                 'direction' => GraphNavigator::DIRECTION_DESERIALIZATION,
-                'format'    => $format,
-                'method'    => 'deserializeMetadata'
+                'format' => $format,
+                'method' => 'deserializeMetadata',
             ];
         }
 

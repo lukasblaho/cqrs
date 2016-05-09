@@ -64,11 +64,7 @@ abstract class AbstractEventSourcedAggregateRoot extends AbstractAggregateRoot
         );
     }
 
-    /**
-     * @param EventMessageInterface $event
-     * @return string
-     */
-    private function getEventName(EventMessageInterface $event)
+    private function getEventName(EventMessageInterface $event): string
     {
         $name = $event->getPayloadType();
 

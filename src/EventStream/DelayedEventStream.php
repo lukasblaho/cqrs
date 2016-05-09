@@ -19,11 +19,7 @@ class DelayedEventStream implements IteratorAggregate, EventStreamInterface
      */
     private $delaySeconds;
 
-    /**
-     * @param EventStreamInterface $eventStream
-     * @param int $delaySeconds
-     */
-    public function __construct(EventStreamInterface $eventStream, $delaySeconds)
+    public function __construct(EventStreamInterface $eventStream, int $delaySeconds)
     {
         $this->eventStream = $eventStream;
         $this->delaySeconds = $delaySeconds;
@@ -37,10 +33,7 @@ class DelayedEventStream implements IteratorAggregate, EventStreamInterface
         return $this->eventStream->getLastEventId();
     }
 
-    /**
-     * @return Generator
-     */
-    public function getIterator()
+    public function getIterator(): Generator
     {
         foreach ($this->eventStream as $offset => $event) {
             $this->delay($event);
@@ -48,9 +41,6 @@ class DelayedEventStream implements IteratorAggregate, EventStreamInterface
         }
     }
 
-    /**
-     * @param EventMessageInterface $event
-     */
     private function delay(EventMessageInterface $event)
     {
         $eventTime = $event->getTimestamp()->getTimestamp();

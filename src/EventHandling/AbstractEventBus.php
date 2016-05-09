@@ -7,11 +7,7 @@ use Generator;
 
 abstract class AbstractEventBus implements EventBusInterface
 {
-    /**
-     * @param EventStreamInterface $eventStream
-     * @return Generator
-     */
-    public function publishFromStream(EventStreamInterface $eventStream)
+    public function publishFromStream(EventStreamInterface $eventStream): Generator
     {
         foreach ($eventStream as $event) {
             $this->publish($event);

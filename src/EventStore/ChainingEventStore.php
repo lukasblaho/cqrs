@@ -4,8 +4,8 @@ namespace CQRS\EventStore;
 
 use CQRS\Domain\Message\EventMessageInterface;
 use CQRS\Exception;
+use Generator;
 use Ramsey\Uuid\UuidInterface;
-use Traversable;
 
 class ChainingEventStore implements EventStoreInterface
 {
@@ -22,9 +22,6 @@ class ChainingEventStore implements EventStoreInterface
         $this->eventStores = $eventStores;
     }
 
-    /**
-     * @param EventMessageInterface $event
-     */
     public function store(EventMessageInterface $event)
     {
         foreach ($this->eventStores as $eventStore) {
@@ -32,21 +29,12 @@ class ChainingEventStore implements EventStoreInterface
         }
     }
 
-    /**
-     * @param int|null $offset
-     * @param int $limit
-     * @return array
-     */
-    public function read($offset = null, $limit = 10)
+    public function read(int $offset = null, int $limit = 10): array
     {
         throw new Exception\BadMethodCallException(sprintf('%s does not support reading', self::class));
     }
 
-    /**
-     * @param null|UuidInterface $previousEventId
-     * @return Traversable
-     */
-    public function iterate(UuidInterface $previousEventId = null)
+    public function iterate(UuidInterface $previousEventId = null): Generator
     {
         throw new Exception\BadMethodCallException(sprintf('%s does not support iterating', self::class));
     }

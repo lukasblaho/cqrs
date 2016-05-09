@@ -18,11 +18,7 @@ class ContinuousEventStream implements IteratorAggregate, EventStreamInterface
      */
     private $pauseMicroseconds;
 
-    /**
-     * @param EventStreamInterface $eventStream
-     * @param int $pauseMicroseconds
-     */
-    public function __construct(EventStreamInterface $eventStream, $pauseMicroseconds = 500000)
+    public function __construct(EventStreamInterface $eventStream, int $pauseMicroseconds = 500000)
     {
         $this->eventStream = $eventStream;
         $this->pauseMicroseconds = $pauseMicroseconds;
@@ -36,10 +32,7 @@ class ContinuousEventStream implements IteratorAggregate, EventStreamInterface
         return $this->eventStream->getLastEventId();
     }
 
-    /**
-     * @return Generator
-     */
-    public function getIterator()
+    public function getIterator(): Generator
     {
         while (true) {
             foreach ($this->eventStream as $event) {

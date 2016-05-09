@@ -31,9 +31,9 @@ class GenericDomainEventMessage extends GenericEventMessage implements DomainEve
      * @param Timestamp|null $timestamp
      */
     public function __construct(
-        $aggregateType,
+        string $aggregateType,
         $aggregateId,
-        $sequenceNumber,
+        int $sequenceNumber,
         $payload,
         $metadata = null,
         UuidInterface $id = null,
@@ -46,10 +46,7 @@ class GenericDomainEventMessage extends GenericEventMessage implements DomainEve
         parent::__construct($payload, $metadata, $id, $timestamp);
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = parent::jsonSerialize();
         $data['aggregateType'] = $this->aggregateType;
@@ -57,10 +54,7 @@ class GenericDomainEventMessage extends GenericEventMessage implements DomainEve
         return $data;
     }
 
-    /**
-     * @return string
-     */
-    public function getAggregateType()
+    public function getAggregateType(): string
     {
         return $this->aggregateType;
     }
@@ -73,10 +67,7 @@ class GenericDomainEventMessage extends GenericEventMessage implements DomainEve
         return $this->aggregateId;
     }
 
-    /**
-     * @return int
-     */
-    public function getSequenceNumber()
+    public function getSequenceNumber(): int
     {
         return $this->sequenceNumber;
     }

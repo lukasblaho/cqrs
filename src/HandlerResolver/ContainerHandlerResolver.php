@@ -31,7 +31,7 @@ class ContainerHandlerResolver
      * @param string $messageType
      * @return callable
      */
-    public function __invoke($handler, $messageType)
+    public function __invoke($handler, string $messageType)
     {
         if (is_string($handler)) {
             $handler = $this->container->get($handler);

@@ -4,18 +4,12 @@ namespace CQRS\Domain\Message;
 
 interface DomainEventMessageInterface extends EventMessageInterface
 {
-    /**
-     * @return string
-     */
-    public function getAggregateType();
+    public function getAggregateType(): string;
 
     /**
      * @return mixed
      */
     public function getAggregateId();
 
-    /**
-     * @return int
-     */
-    public function getSequenceNumber();
+    public function getSequenceNumber(): int;
 }

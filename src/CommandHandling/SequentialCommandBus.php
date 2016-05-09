@@ -56,45 +56,29 @@ class SequentialCommandBus implements CommandBusInterface
      */
     private $logger;
 
-    /**
-     * @param ContainerInterface $locator
-     * @param TransactionManagerInterface $transactionManager
-     * @param EventPublisherInterface $eventPublisher
-     * @param LoggerInterface|null $logger
-     */
     public function __construct(
         ContainerInterface $locator,
         TransactionManagerInterface $transactionManager,
         EventPublisherInterface $eventPublisher,
         LoggerInterface $logger = null
     ) {
-
         $this->locator = $locator;
         $this->transactionManager = $transactionManager;
         $this->eventPublisher = $eventPublisher;
-        $this->logger = $logger ?: new NullLogger();
+        $this->logger = $logger ?? new NullLogger();
     }
 
-    /**
-     * @return ContainerInterface
-     */
-    public function getLocator()
+    public function getLocator(): ContainerInterface
     {
         return $this->locator;
     }
 
-    /**
-     * @return TransactionManagerInterface
-     */
-    public function getTransactionManager()
+    public function getTransactionManager(): TransactionManagerInterface
     {
         return $this->transactionManager;
     }
 
-    /**
-     * @return EventPublisherInterface
-     */
-    public function getEventPublisher()
+    public function getEventPublisher(): EventPublisherInterface
     {
         return $this->eventPublisher;
     }

@@ -22,10 +22,8 @@ interface AggregateRootInterface
 
     /**
      * Returns the number of uncommitted events currently available in the aggregate.
-     *
-     * @return int
      */
-    public function getUncommittedEventsCount();
+    public function getUncommittedEventsCount(): int;
 
     /**
      * Clears the events currently marked as "uncommitted".
@@ -40,7 +38,7 @@ interface AggregateRootInterface
      * at least 1. This version number can be used by optimistic locking strategies and detection of conflicting
      * concurrent modification.
      *
-     * @return int
+     * @return int|null
      */
     public function getVersion();
 
@@ -49,8 +47,6 @@ interface AggregateRootInterface
      * to remove this instance at an appropriate time.
      *
      * Repositories should not return any instances of Aggregates that return true on isDeleted().
-     *
-     * @return bool
      */
-    public function isDeleted();
+    public function isDeleted(): bool;
 }

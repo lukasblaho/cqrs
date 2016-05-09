@@ -6,21 +6,12 @@ use CQRS\Serializer\SerializerInterface;
 
 class SomeSerializer implements SerializerInterface
 {
-    /**
-     * @param object|array $data
-     * @return string
-     */
-    public function serialize($data)
+    public function serialize($data): string
     {
         return '{}';
     }
 
-    /**
-     * @param string $data
-     * @param string $type
-     * @return object|array
-     */
-    public function deserialize($data, $type)
+    public function deserialize(string $data, string $type)
     {
         switch ($type) {
             case SomeEvent::class:

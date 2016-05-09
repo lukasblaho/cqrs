@@ -5,15 +5,15 @@ namespace CQRS\Serializer;
 interface SerializerInterface
 {
     /**
-     * @param object|array $data
+     * @param mixed $data
      * @return string
      */
-    public function serialize($data);
+    public function serialize($data): string;
 
     /**
      * @param string $data
      * @param string $type
-     * @return object|array
+     * @return mixed
      */
-    public function deserialize($data, $type);
+    public function deserialize(string $data, string $type);
 }

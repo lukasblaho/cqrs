@@ -16,11 +16,6 @@ class CommandHandlerLocator implements ContainerInterface
      */
     protected $resolver;
 
-    /**
-     * @param array $handlers
-     * @param callable $resolver
-     * @throws Exception\InvalidArgumentException
-     */
     public function __construct(array $handlers = [], callable $resolver = null)
     {
         foreach ($handlers as $commandType => $handler) {
@@ -32,39 +27,20 @@ class CommandHandlerLocator implements ContainerInterface
 
     /**
      * @param string $commandType
-     * @param mixed $handler
-     * @throws Exception\InvalidArgumentException
+     * @param callable|mixed $handler
      */
-    public function set($commandType, $handler)
+    public function set(string $commandType, $handler)
     {
-        if (!is_string($commandType)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Command type must be a string; got %s',
-                is_object($commandType) ? get_class($commandType) : gettype($commandType)
-            ));
-        }
-
         $this->handlers[$commandType] = $handler;
     }
 
-    /**
-     * @param string $commandType
-     * @throws Exception\InvalidArgumentException
-     */
-    public function remove($commandType)
+    public function remove(string $commandType)
     {
-        if (!is_string($commandType)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Command type must be a string; got %s',
-                is_object($commandType) ? get_class($commandType) : gettype($commandType)
-            ));
-        }
-
         unset($this->handlers[$commandType]);
     }
 
     /**
-     * @param mixed $handler
+     * @param callable|mixed $handler
      */
     public function removeHandler($handler)
     {
@@ -80,7 +56,7 @@ class CommandHandlerLocator implements ContainerInterface
      * @return callable
      * @throws Exception\CommandHandlerNotFoundException
      */
-    public function get($commandType)
+    public function get($commandType): callable
     {
         if (!$this->has($commandType)) {
             throw new Exception\CommandHandlerNotFoundException(sprintf(
@@ -98,7 +74,7 @@ class CommandHandlerLocator implements ContainerInterface
      * @param string $commandType
      * @return bool
      */
-    public function has($commandType)
+    public function has($commandType): bool
     {
         return array_key_exists($commandType, $this->handlers);
     }

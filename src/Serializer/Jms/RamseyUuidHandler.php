@@ -12,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
 
 class RamseyUuidHandler implements SubscribingHandlerInterface
 {
-    public static function getSubscribingMethods()
+    public static function getSubscribingMethods(): array
     {
         $methods = [];
         $formats = ['json', 'xml', 'yml'];
@@ -21,18 +21,18 @@ class RamseyUuidHandler implements SubscribingHandlerInterface
         foreach ($formats as $format) {
             foreach ($types as $type) {
                 $methods[] = [
-                    'type'      => $type,
+                    'type' => $type,
                     'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
-                    'format'    => $format,
-                    'method'    => 'serializeUuid'
+                    'format' => $format,
+                    'method' => 'serializeUuid',
                 ];
             }
 
             $methods[] = [
-                'type'      => Uuid::class,
+                'type' => Uuid::class,
                 'direction' => GraphNavigator::DIRECTION_DESERIALIZATION,
-                'format'    => $format,
-                'method'    => 'deserializeUuid'
+                'format' => $format,
+                'method' => 'deserializeUuid',
             ];
         }
 

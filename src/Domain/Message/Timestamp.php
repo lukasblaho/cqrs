@@ -10,11 +10,7 @@ class Timestamp extends DateTimeImmutable implements JsonSerializable
 {
     const FORMAT = 'Y-m-d\TH:i:s.uP';
 
-    /**
-     * @param string $time
-     * @param DateTimeZone|null $timezone
-     */
-    public function __construct($time = null, DateTimeZone $timezone = null)
+    public function __construct(string $time = null, DateTimeZone $timezone = null)
     {
         if ($time === null) {
             $t = microtime(true);
@@ -24,26 +20,17 @@ class Timestamp extends DateTimeImmutable implements JsonSerializable
         parent::__construct($time, $timezone);
     }
 
-    /**
-     * @return float
-     */
-    public function getTimestampWithMicroseconds()
+    public function getTimestampWithMicroseconds(): float
     {
         return (float) $this->format('U.u');
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->format(static::FORMAT);
     }
 
-    /**
-     * @return string
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): string
     {
         return (string) $this;
     }

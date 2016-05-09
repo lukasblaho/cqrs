@@ -53,15 +53,8 @@ class EventHandlerLocator implements ContainerInterface
      * @param int $priority
      * @throws Exception\InvalidArgumentException
      */
-    public function add($eventType, $handler, $priority = 1)
+    public function add(string $eventType, $handler, int $priority = 1)
     {
-        if (!is_string($eventType)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Event type must be a string; got %s',
-                is_object($eventType) ? get_class($eventType) : gettype($eventType)
-            ));
-        }
-
         if (array_key_exists($eventType, $this->handlers)
             && array_key_exists($priority, $this->handlers[$eventType])
             && in_array($handler, $this->handlers[$eventType], true)
@@ -78,7 +71,7 @@ class EventHandlerLocator implements ContainerInterface
      * @param string|null $eventType
      * @throws Exception\InvalidArgumentException
      */
-    public function remove($handler, $eventType = null)
+    public function remove($handler, string $eventType = null)
     {
         // If event type is not specified, we need to iterate through each event type
         if (null === $eventType) {
@@ -128,7 +121,7 @@ class EventHandlerLocator implements ContainerInterface
      * @param string $eventType
      * @return callable[]
      */
-    public function get($eventType)
+    public function get($eventType): array
     {
         $handlers = array_merge_recursive(
             array_key_exists($eventType, $this->handlers) ? $this->handlers[$eventType] : [],
@@ -155,7 +148,7 @@ class EventHandlerLocator implements ContainerInterface
     /**
      * {@inheritdoc}
      */
-    public function has($eventType)
+    public function has($eventType): bool
     {
         return array_key_exists($eventType, $this->handlers) || array_key_exists('*', $this->handlers);
     }

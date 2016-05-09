@@ -3,8 +3,8 @@
 namespace CQRS\EventStore;
 
 use CQRS\Domain\Message\EventMessageInterface;
+use Generator;
 use Ramsey\Uuid\UuidInterface;
-use Traversable;
 
 class FilteringEventStore implements EventStoreInterface
 {
@@ -18,19 +18,12 @@ class FilteringEventStore implements EventStoreInterface
      */
     private $filter;
 
-    /**
-     * @param EventStoreInterface $eventStore
-     * @param EventFilterInterface $filter
-     */
     public function __construct(EventStoreInterface $eventStore, EventFilterInterface $filter)
     {
         $this->eventStore = $eventStore;
-        $this->filter     = $filter;
+        $this->filter = $filter;
     }
 
-    /**
-     * @param EventMessageInterface $event
-     */
     public function store(EventMessageInterface $event)
     {
         if ($this->filter->isValid($event)) {
@@ -38,21 +31,12 @@ class FilteringEventStore implements EventStoreInterface
         }
     }
 
-    /**
-     * @param int|null $offset
-     * @param int $limit
-     * @return array
-     */
-    public function read($offset = null, $limit = 10)
+    public function read(int $offset = null, int $limit = 10): array
     {
         return $this->eventStore->read($offset, $limit);
     }
 
-    /**
-     * @param null|UuidInterface $previousEventId
-     * @return Traversable
-     */
-    public function iterate(UuidInterface $previousEventId = null)
+    public function iterate(UuidInterface $previousEventId = null): Generator
     {
         return $this->eventStore->iterate($previousEventId);
     }

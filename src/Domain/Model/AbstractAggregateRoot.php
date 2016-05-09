@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class AbstractAggregateRoot implements AggregateRootInterface
 {
     /**
-     * @var EventContainer
+     * @var EventContainer|null
      */
     private $eventContainer;
 
@@ -25,14 +25,14 @@ abstract class AbstractAggregateRoot implements AggregateRootInterface
 
     /**
      * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @var int
+     * @var int|null
      */
     private $lastEventSequenceNumber;
 
     /**
      * @ORM\Version
      * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @var int
+     * @var int|null
      */
     private $version;
 
@@ -45,11 +45,11 @@ abstract class AbstractAggregateRoot implements AggregateRootInterface
      * Registers an event to be published when the aggregate is saved, containing the given payload and optional
      * metadata.
      *
-     * @param object $payload
+     * @param mixed $payload
      * @param Metadata|array $metadata
      * @return DomainEventMessageInterface
      */
-    protected function registerEvent($payload, $metadata = null)
+    protected function registerEvent($payload, $metadata = null): DomainEventMessageInterface
     {
         if ($payload instanceof AbstractDomainEvent && null === $payload->aggregateId) {
             $payload->setAggregateId($this->getId());
@@ -59,11 +59,7 @@ abstract class AbstractAggregateRoot implements AggregateRootInterface
             ->addEvent($payload, $metadata);
     }
 
-    /**
-     * @param DomainEventMessageInterface $eventMessage
-     * @return DomainEventMessageInterface
-     */
-    protected function registerEventMessage(DomainEventMessageInterface $eventMessage)
+    protected function registerEventMessage(DomainEventMessageInterface $eventMessage): DomainEventMessageInterface
     {
         return $this->getEventContainer()
             ->addEventMessage($eventMessage);
@@ -74,7 +70,7 @@ abstract class AbstractAggregateRoot implements AggregateRootInterface
      *
      * @return DomainEventMessageInterface[]
      */
-    public function getUncommittedEvents()
+    public function getUncommittedEvents(): array
     {
         if ($this->eventContainer === null) {
             return [];
@@ -84,10 +80,8 @@ abstract class AbstractAggregateRoot implements AggregateRootInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @return int
      */
-    public function getUncommittedEventsCount()
+    public function getUncommittedEventsCount(): int
     {
         return count($this->eventContainer);
     }
@@ -111,16 +105,13 @@ abstract class AbstractAggregateRoot implements AggregateRootInterface
         $this->deleted = true;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDeleted()
+    public function isDeleted(): bool
     {
         return $this->deleted;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getVersion()
     {
@@ -131,7 +122,7 @@ abstract class AbstractAggregateRoot implements AggregateRootInterface
      * @return EventContainer
      * @throws RuntimeException
      */
-    private function getEventContainer()
+    private function getEventContainer(): EventContainer
     {
         if ($this->eventContainer === null) {
             $aggregateId = $this->getId();

@@ -26,7 +26,7 @@ abstract class AbstractCommand extends AbstractPayload
      * @param string $name
      * @throws RuntimeException
      */
-    protected function throwPropertyIsNotValidException($name)
+    protected function throwPropertyIsNotValidException(string $name)
     {
         $parts   = explode('\\', get_class($this));
         $command = end($parts);

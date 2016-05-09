@@ -24,23 +24,17 @@ class SimpleIdentityMap implements IdentityMapInterface
     /**
      * @return AggregateRootInterface[]
      */
-    public function getAll()
+    public function getAll(): array
     {
         return $this->aggregateRoots;
     }
 
-    /**
-     * @param AggregateRootInterface $aggregateRoot
-     */
     public function add(AggregateRootInterface $aggregateRoot)
     {
         $key = (string) $aggregateRoot->getId();
         $this->aggregateRoots[$key] = $aggregateRoot;
     }
 
-    /**
-     * @param AggregateRootInterface $aggregateRoot
-     */
     public function remove(AggregateRootInterface $aggregateRoot)
     {
         $key = (string) $aggregateRoot->getId();

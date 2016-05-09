@@ -7,9 +7,9 @@ class EventHandlerResolver
     /**
      * @param mixed $handler
      * @param string $eventType
-     * @return callable
+     * @return callable|mixed
      */
-    public function __invoke($handler, $eventType)
+    public function __invoke($handler, string $eventType)
     {
         if (is_object($handler) && !is_callable($handler)) {
             $method = $this->resolveHandlingMethod($eventType);
@@ -27,7 +27,7 @@ class EventHandlerResolver
      * @param string $eventType
      * @return string
      */
-    protected function resolveHandlingMethod($eventType)
+    protected function resolveHandlingMethod(string $eventType): string
     {
         // Remove namespace
         $pos = strrpos($eventType, '\\');
